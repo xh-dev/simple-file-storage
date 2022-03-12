@@ -2,6 +2,7 @@
 
 rectangle "SFS (Simple file storage)" as rect #green {
     (create file) as cf
+    (delete file) as df
     (update file) as uf
     (get file) as gf
 }
@@ -11,6 +12,7 @@ rectangle "SFS (Simple file storage)" as rect #green {
 agent "Update Agent" as appClient
 
 cf -- admin
+df -- admin
 uf -- appClient
 gf -- user
 @enduml

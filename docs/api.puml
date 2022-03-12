@@ -23,17 +23,21 @@ rectangle APIs as apis{
 
 rectangle Entity{
     class FileSubmission {
-        String id
+        UUID id
+        String description
         Long size
         String hash
-        Blob bytes
+        byte[] bytes
+        Date lastModified
     }
 
     object FileSubmissionExample {
         id = "79caedff-2905-4df1-affd-fbd35c867f05"
+        description = "testing file"
         size = 1000L
-        hash = "dd1f3dbc-0d2b-4cd3-af60-2351845070be"
-        bytes = Blob(data)
+        hash = "dec40b74bfc6ffa07d6d3e8efd8f1dc7788e778266f5e65602d800499ba30849"
+        bytes = byte[]
+        lastModified = 1647099049114
     }
 
     FileSubmission -[dashed]-> FileSubmissionExample : Example
@@ -65,10 +69,25 @@ PostResponse -[dashed]- FileSubmission : partial data
 PutResponse -[dashed]- FileSubmission : partial data
 
 rectangle Get as getRect{
-    rectangle GetResponse[
-        GetResponse
+    rectangle GetResponsePNG[
+        GetResponse (PNG)
         ---
-        content-type: octet-stream
+        content-type: img/png
+    ]
+    rectangle GetResponseGIF[
+        GetResponse (GIF)
+        ---
+        content-type: img/gif
+    ]
+    rectangle GetResponseJPEG[
+        GetResponse (JPEG)
+        ---
+        content-type: img/jpeg
+    ]
+    rectangle GetResponseOctet[
+        GetResponse (Octet)
+        ---
+        content-type: application/octet-stream
     ]
 }
 

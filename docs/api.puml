@@ -1,0 +1,90 @@
+@startuml
+allow_mixing
+rectangle APIs as apis{
+    top to bottom direction
+    agent "POST: /api/v1/file" as apis.post
+    note bottom of apis.post
+        create a file submission
+    end note
+    agent "PUT: /api/v1/file/{id}" as apis.put
+    note bottom of apis.put
+        update file based on
+        the file submission
+    end note
+    agent "GET: /api/v1/file" as apis.get
+    note bottom of apis.get
+        retrieve the file submission
+    end note
+    agent "Delete: /api/v1/file/{id}" as apis.delete
+    note bottom of apis.delete
+        delete file
+    end note
+}
+
+rectangle Entity{
+    class FileSubmission {
+        String id
+        Long size
+        String hash
+        Blob bytes
+    }
+
+    object FileSubmissionExample {
+        id = "79caedff-2905-4df1-affd-fbd35c867f05"
+        size = 1000L
+        hash = "dd1f3dbc-0d2b-4cd3-af60-2351845070be"
+        bytes = Blob(data)
+    }
+
+    FileSubmission -[dashed]-> FileSubmissionExample : Example
+
+
+}
+
+rectangle Post as postRect{
+    class PostRequest{}
+    class PostResponse{
+        id: String
+        size: Long
+        hash: String
+    }
+}
+
+rectangle Put as putRect{
+    class PutRequest{
+        file: MultipartFile
+    }
+    class PutResponse {
+        id: String
+        size: Long
+        hash: String
+    }
+}
+
+PostResponse -[dashed]- FileSubmission : partial data
+PutResponse -[dashed]- FileSubmission : partial data
+
+rectangle Get as getRect{
+    rectangle GetResponse[
+        GetResponse
+        ---
+        content-type: octet-stream
+    ]
+}
+
+rectangle Delete as deleteRect{
+    class DeleteResponse {
+        id: String
+        size: Long
+        hash: String
+    }
+}
+
+DeleteResponse -[dashed]- FileSubmission : partial data
+
+apis.post -[dashed]-> postRect
+apis.put -[dashed]-> putRect
+apis.get -[dashed]-> getRect
+apis.delete -[dashed]-> deleteRect
+
+@enduml

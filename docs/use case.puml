@@ -1,0 +1,16 @@
+@startuml
+
+rectangle "SFS (Simple file storage)" as rect #green {
+    (create file) as cf
+    (update file) as uf
+    (get file) as gf
+}
+
+:Admin User: as admin
+:User: as user
+agent "Update Agent" as appClient
+
+cf -- admin
+uf -- appClient
+gf -- user
+@enduml
